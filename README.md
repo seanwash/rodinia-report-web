@@ -42,6 +42,7 @@ Make sure to deploy the output of `remix build`
 
 When you ran `npm init remix` there were a few choices for hosting. You can run that again to create a new project, then copy over your `app/` folder to the new project that's pre-configured for your target server.
 
+
 ```sh
 cd ..
 # create a new project, and pick a pre-configured host
