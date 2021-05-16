@@ -1,15 +1,21 @@
 import type { LinksFunction, LoaderFunction } from "remix";
-import { Meta, Links, Scripts, useRouteData, LiveReload } from "remix";
+import { Meta, Links, Scripts, LiveReload } from "remix";
 import { Outlet } from "react-router-dom";
 
 import stylesUrl from "./styles/global.css";
 
 export let links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
+  return [
+    { rel: "stylesheet", href: stylesUrl },
+    {
+      rel: "stylesheet",
+      href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
+    },
+  ];
 };
 
 export let loader: LoaderFunction = async () => {
-  return { date: new Date() };
+  return {};
 };
 
 function Document({ children }: { children: React.ReactNode }) {
@@ -32,13 +38,9 @@ function Document({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  let data = useRouteData();
   return (
     <Document>
       <Outlet />
-      <footer>
-        <p>This page was rendered at {data.date.toLocaleString()}</p>
-      </footer>
     </Document>
   );
 }

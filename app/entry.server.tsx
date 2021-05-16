@@ -6,17 +6,17 @@ export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext
+  remixContext: EntryContext,
 ) {
   let markup = ReactDOMServer.renderToString(
-    <RemixServer context={remixContext} url={request.url} />
+    <RemixServer context={remixContext} url={request.url} />,
   );
 
   return new Response("<!DOCTYPE html>" + markup, {
     status: responseStatusCode,
     headers: {
       ...Object.fromEntries(responseHeaders),
-      "Content-Type": "text/html"
-    }
+      "Content-Type": "text/html",
+    },
   });
 }
