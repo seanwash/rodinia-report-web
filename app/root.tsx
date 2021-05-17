@@ -2,16 +2,10 @@ import type { LinksFunction, LoaderFunction } from "remix";
 import { Meta, Links, Scripts, LiveReload } from "remix";
 import { Outlet } from "react-router-dom";
 
-import stylesUrl from "./styles/global.css";
+import stylesUrl from "./styles/app.css";
 
 export let links: LinksFunction = () => {
-  return [
-    { rel: "stylesheet", href: stylesUrl },
-    {
-      rel: "stylesheet",
-      href: "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
-    },
-  ];
+  return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
 export let loader: LoaderFunction = async () => {

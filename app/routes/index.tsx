@@ -3,7 +3,6 @@ import { useRouteData } from "remix";
 import { Link } from "react-router-dom";
 import { firestore } from "../lib/fire";
 
-import stylesUrl from "../styles/index.css";
 import { getUser } from "../lib/sessions.server";
 
 export let meta: MetaFunction = () => {
@@ -11,10 +10,6 @@ export let meta: MetaFunction = () => {
     title: "Rodinia Report",
     description: "Welcome to the Rodinia Report!",
   };
-};
-
-export let links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
 };
 
 export let loader: LoaderFunction = async ({ request }) => {
