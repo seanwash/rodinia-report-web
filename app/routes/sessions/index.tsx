@@ -46,8 +46,6 @@ export default function () {
             aria-label="Password"
             placeholder="Password"
             required
-            value="secretsecret"
-            onChange={() => {}}
           />
         </div>
         <div>
