@@ -2,15 +2,16 @@
   "private": true,
   "name": "rodinia-report",
   "scripts": {
-    "build": "npx remix build && npm run build:css",
-    "railway:build": "npx railway run remix build && npm run build:css",
-    "dev": "concurrently \"npm:remix\" \"npm:watch:css\"",
-    "railway:dev": "npx railway run concurrently \"npm:remix\" \"npm:watch:css\"",
+    "build": "npm run css:build && npm run remix:build",
+    "railway:build": "npx railway run npm run css:build && npm run remix:build",
+    "dev": "concurrently \"npm:remix:dev\" \"npm:css:dev\"",
+    "railway:dev": "npx railway run concurrently \"npm:remix:dev\" \"npm:css:dev\"",
     "start": "remix-serve build",
     "railway:start": "npx railway run remix-serve build",
-    "remix": "npx remix run",
-    "watch:css": "npx railway run postcss styles --base styles --dir app/styles -w",
-    "build:css": "postcss styles --base styles --dir app/styles --env production"
+    "remix:dev": "npx remix run",
+    "remix:build": "npx remix build",
+    "css:dev": "npx railway run postcss styles --base styles --dir app/styles -w",
+    "css:build": "postcss styles --base styles --dir app/styles --env production"
   },
   "dependencies": {
     "@remix-run/node": "0.17.0",
