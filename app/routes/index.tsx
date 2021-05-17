@@ -1,4 +1,4 @@
-import type { MetaFunction, LinksFunction, LoaderFunction } from "remix";
+import type { MetaFunction, LoaderFunction } from "remix";
 import { useRouteData } from "remix";
 import { Link } from "react-router-dom";
 import { firestore } from "../lib/fire";
