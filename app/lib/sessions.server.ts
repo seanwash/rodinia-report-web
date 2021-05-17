@@ -42,6 +42,8 @@ export async function signIn(request: Request) {
       .createSessionCookie(userToken, { expiresIn });
 
     if (cookie) {
+      // TODO: Should this just be a token instead? I haven't figured out exactly
+      //       how to use a firebase cookie with remix.
       session.set("firebaseCookie", cookie);
       return { ok: true, session };
     }

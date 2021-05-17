@@ -2,12 +2,15 @@
   "private": true,
   "name": "rodinia-report",
   "scripts": {
-    "build": "npx remix build",
-    "railway:build": "npx railway run remix build",
-    "dev": "npx remix run",
-    "railway:dev": "npx railway run remix run",
+    "build": "npx remix build && npm run build:css",
+    "railway:build": "npx railway run remix build && npm run build:css",
+    "dev": "concurrently \"npm:remix\" \"npm:watch:css\"",
+    "railway:dev": "npx railway run concurrently \"npm:remix\" \"npm:watch:css\"",
     "start": "remix-serve build",
-    "railway:start": "npx railway run remix-serve build"
+    "railway:start": "npx railway run remix-serve build",
+    "remix": "npx remix run",
+    "watch:css": "npx railway run postcss styles --base styles --dir app/styles -w",
+    "build:css": "postcss styles --base styles --dir app/styles --env production"
   },
   "dependencies": {
     "@remix-run/node": "0.17.0",
@@ -24,7 +27,12 @@
     "@remix-run/dev": "0.17.0",
     "@types/react": "^17.0.1",
     "@types/react-dom": "^17.0.0",
+    "autoprefixer": "^10.2.5",
+    "concurrently": "^6.1.0",
+    "postcss": "^8.2.15",
+    "postcss-cli": "^8.3.1",
     "prettier": "^2.2.1",
+    "tailwindcss": "^2.1.2",
     "typescript": "^4.1.2"
   },
   "engines": {
