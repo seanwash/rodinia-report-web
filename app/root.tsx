@@ -48,11 +48,11 @@ function Document({ children }: { children: React.ReactNode }) {
 
         <div className="container mx-auto sm:flex items-center justify-between p-4">
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl leading-7 text-el-paso sm:text-3xl sm:leading-9 max-w-3xl">
+            <h2 className="text-2xl leading-7 text-el-paso sm:text-3xl sm:leading-9 max-w-3xl">
               The <span className="font-bold">Rodinia Report</span> is a
               socially curated collection of environmental and conservation
               based news.
-            </h1>
+            </h2>
           </div>
           <div className="flex mt-4 sm:mt-0 sm:ml-8">
             <span className="shadow-sm rounded-sm">
