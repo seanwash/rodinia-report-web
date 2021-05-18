@@ -19,7 +19,7 @@ export const meta: MetaFunction = () => {
 
 export const loader: LoaderFunction = async () => {
   const topicSnapshot = await firestore.collection("topics").get();
-  const topics = await topicSnapshot.docs.map((doc) => ({
+  const topics = topicSnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
