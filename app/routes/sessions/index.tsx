@@ -1,6 +1,7 @@
 import React from "react";
 import { ActionFunction, LoaderFunction, redirect, useRouteData } from "remix";
 import { getUser, sessionCookie, signIn } from "../../lib/sessions.server";
+import Button from "../../components/Button";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
@@ -49,7 +50,7 @@ export default function () {
           />
         </div>
         <div>
-          <input type="submit" value="Sign In" />
+          <Button type="submit">Sign In</Button>
         </div>
       </form>
     </>

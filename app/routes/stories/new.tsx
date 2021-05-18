@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { firestore } from "../../lib/fire";
 import { getUser } from "../../lib/sessions.server";
 import firebase from "firebase/app";
+import Button from "../../components/Button";
 
 export const meta: MetaFunction = () => {
   return {
@@ -98,7 +99,8 @@ export default function NewStory() {
             Source Paywalled
           </label>
         </div>
-        <input type="submit" value="Submit" />
+
+        <Button type="submit">Submit</Button>
       </form>
     </div>
   );
