@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { firestore } from "../../lib/fire";
 import { getUser } from "../../lib/sessions.server";
 import firebase from "firebase/app";
+import Button from "../../components/Button";
 
 export const meta: MetaFunction = () => {
   return {
@@ -17,7 +18,10 @@ export const meta: MetaFunction = () => {
   };
 };
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+  if (!user) return redirect("/sessions");
+
   const topicSnapshot = await firestore.collection("topics").get();
   const topics = topicSnapshot.docs.map((doc) => ({
     id: doc.id,
@@ -31,8 +35,8 @@ export const action: ActionFunction = async ({ request }) => {
   const params = new URLSearchParams(await request.text());
   const sourcePaywalled = params.get("sourcePaywalled") === "on";
 
-  // TODO: Require auth to post.
   const user = await getUser(request);
+  if (!user) return redirect("/sessions");
 
   // TODO: Error handling?
   // TODO: Validation?
@@ -98,7 +102,8 @@ export default function NewStory() {
             Source Paywalled
           </label>
         </div>
-        <input type="submit" value="Submit" />
+
+        <Button type="submit">Submit</Button>
       </form>
     </div>
   );

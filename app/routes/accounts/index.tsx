@@ -1,6 +1,7 @@
 import React from "react";
 import { ActionFunction, redirect } from "remix";
 import { signUp } from "../../lib/sessions.server";
+import Button from "../../components/Button";
 
 // TODO: In loader, check for user existence. If user, redirect.
 
@@ -33,7 +34,7 @@ export default function () {
         />
       </div>
       <div>
-        <input type="submit" value="Sign Up" />
+        <Button type="submit">Sign Up</Button>
       </div>
     </form>
   );

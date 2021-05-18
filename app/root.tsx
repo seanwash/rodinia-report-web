@@ -1,6 +1,7 @@
 import type { LinksFunction, LoaderFunction } from "remix";
 import { Meta, Links, Scripts, LiveReload, useRouteData } from "remix";
 import { Link, Outlet } from "react-router-dom";
+import ButtonLink from "./components/ButtonLink/ButtonLink";
 
 import stylesUrl from "./styles/app.css";
 import { getUser } from "./lib/sessions.server";
@@ -56,7 +57,7 @@ function Document({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex mt-4 sm:mt-0 sm:ml-8">
             <span className="shadow-sm rounded-sm">
-              <Link to="/stories/new">Submit Story</Link>
+              <ButtonLink to="/stories/new">Submit Story</ButtonLink>
             </span>
           </div>
         </div>
