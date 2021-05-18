@@ -18,7 +18,10 @@ export const meta: MetaFunction = () => {
   };
 };
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+  if (!user) return redirect("/sessions");
+
   const topicSnapshot = await firestore.collection("topics").get();
   const topics = topicSnapshot.docs.map((doc) => ({
     id: doc.id,
@@ -32,8 +35,8 @@ export const action: ActionFunction = async ({ request }) => {
   const params = new URLSearchParams(await request.text());
   const sourcePaywalled = params.get("sourcePaywalled") === "on";
 
-  // TODO: Require auth to post.
   const user = await getUser(request);
+  if (!user) return redirect("/sessions");
 
   // TODO: Error handling?
   // TODO: Validation?
