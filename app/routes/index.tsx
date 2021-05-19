@@ -25,13 +25,22 @@ export default function Index() {
   let { stories } = useRouteData();
 
   // TODO: No any here.
-  stories = stories.map((story: any) => ({
-    ...story,
-    createdAt: new Intl.DateTimeFormat().format(
+  stories = stories.map((story: any) => {
+    const sourceUrl = new URL(story.sourceUrl);
+    sourceUrl.searchParams.append("utm_source", "rodinia_report");
+    sourceUrl.searchParams.append("ref", "rodinia_report");
+
+    const createdAt = new Intl.DateTimeFormat().format(
       new Date(story.createdAt.seconds * 1000),
-    ),
-    sourceHostname: new URL(story.sourceUrl).hostname,
-  }));
+    );
+
+    return {
+      ...story,
+      sourceUrl,
+      createdAt,
+      sourceHostname: new URL(story.sourceUrl).hostname,
+    };
+  });
 
   return (
     <ul className="bg-alabaster-300 shadow-sm rounded-sm divide-y divide-alabaster">
@@ -40,7 +49,12 @@ export default function Index() {
           <div className="flex items-center space-x-4">
             <div className="p-4">
               <h3>
-                <a href={story.sourceUrl} className="hover:underline">
+                <a
+                  href={story.sourceUrl}
+                  target="_blank"
+                  rel="noopener"
+                  className="hover:underline"
+                >
                   {story.title}
                 </a>
               </h3>
