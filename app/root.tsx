@@ -13,7 +13,12 @@ export const links: LinksFunction = () => {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
 
-  return { user };
+  // Only keys that should be publicly visible please.
+  const env = {
+    SENTRY_DSN: process.env.SENTRY_DSN,
+  };
+
+  return { user, env };
 };
 
 function Document({ children }: { children: React.ReactNode }) {
@@ -64,6 +69,11 @@ function Document({ children }: { children: React.ReactNode }) {
 
         <main className="container mx-auto p-4">{children}</main>
 
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.env = ${JSON.stringify(data.env)}`,
+          }}
+        />
         <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
