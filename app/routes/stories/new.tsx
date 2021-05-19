@@ -92,7 +92,9 @@ export default function NewStory() {
             size={3}
           >
             {topics.map((topic) => (
-              <option value={topic.id}>{topic.name}</option>
+              <option key={topic.id} value={topic.id}>
+                {topic.name}
+              </option>
             ))}
           </select>
         </div>
