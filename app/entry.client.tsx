@@ -1,5 +1,11 @@
 import ReactDOM from "react-dom";
 import { RemixBrowser } from "remix";
+import * as Sentry from "@sentry/react";
+
+Sentry.init({
+  // @ts-ignore
+  dsn: window.env.SENTRY_DSN,
+});
 
 // @types/react-dom says the 2nd argument to ReactDOM.hydrate() must be a
 // `Element | DocumentFragment | null` but React 16 allows you to pass the
