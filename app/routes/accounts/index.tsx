@@ -1,7 +1,6 @@
 import React from "react";
-import { ActionFunction, redirect } from "remix";
+import { ActionFunction, Form, redirect } from "remix";
 import { signUp } from "../../lib/sessions.server";
-import Button from "../../components/Button";
 
 // TODO: In loader, check for user existence. If user, redirect.
 
@@ -14,7 +13,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function () {
   return (
-    <form method="post">
+    <Form method="post" className="space-y-4">
       <div>
         <input
           type="email"
@@ -22,6 +21,8 @@ export default function () {
           aria-label="Email Address"
           placeholder="Email Address"
           required
+          autoComplete="email"
+          className="twc-input"
         />
       </div>
       <div>
@@ -31,11 +32,14 @@ export default function () {
           aria-label="Password"
           placeholder="Password"
           required
+          className="twc-input"
         />
       </div>
       <div>
-        <Button type="submit">Sign Up</Button>
+        <button className="twc-button" type="submit">
+          Sign Up
+        </button>
       </div>
-    </form>
+    </Form>
   );
 }

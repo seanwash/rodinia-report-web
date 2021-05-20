@@ -1,7 +1,12 @@
 import React from "react";
-import { ActionFunction, LoaderFunction, redirect, useRouteData } from "remix";
+import {
+  ActionFunction,
+  Form,
+  LoaderFunction,
+  redirect,
+  useRouteData,
+} from "remix";
 import { getUser, sessionCookie, signIn } from "../../lib/sessions.server";
-import Button from "../../components/Button";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
@@ -27,32 +32,33 @@ export default function () {
   const data = useRouteData();
 
   return (
-    <>
-      {data.user && <div>{data.user.uid}</div>}
-
-      <form method="post">
-        <div>
-          <input
-            type="email"
-            name="email"
-            aria-label="Email Address"
-            placeholder="Email Address"
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            name="password"
-            aria-label="Password"
-            placeholder="Password"
-            required
-          />
-        </div>
-        <div>
-          <Button type="submit">Sign In</Button>
-        </div>
-      </form>
-    </>
+    <Form method="post" className="space-y-4">
+      <div>
+        <input
+          type="email"
+          name="email"
+          aria-label="Email Address"
+          placeholder="Email Address"
+          autoComplete="email"
+          required
+          className="twc-input"
+        />
+      </div>
+      <div>
+        <input
+          type="password"
+          name="password"
+          aria-label="Password"
+          placeholder="Password"
+          required
+          className="twc-input"
+        />
+      </div>
+      <div>
+        <button className="twc-button" type="submit">
+          Sign In
+        </button>
+      </div>
+    </Form>
   );
 }

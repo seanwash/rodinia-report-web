@@ -1,4 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind screens;
+
+/* Components */
+
+.twc-input {
+  @apply appearance-none block w-full px-3 py-2 border border-gray-300 rounded-sm shadow-sm placeholder-gray-400 focus:outline-none focus:ring-el-paso focus:border-el-paso sm:text-sm;
+}
+
+.twc-checkbox {
+  @apply h-4 w-4 text-el-paso focus:ring-el-paso-600 border-gray-300 rounded-sm;
+}
+
+.twc-button {
+  @apply flex justify-center py-2 px-4 border border-transparent rounded-sm shadow-sm text-sm font-medium text-alabaster bg-el-paso hover:bg-el-paso-600 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-el-paso-600;
+}
+
+/* End Components */
+
 @tailwind utilities;
