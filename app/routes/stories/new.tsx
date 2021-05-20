@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import { firestore } from "../../lib/fire";
 import { getUser } from "../../lib/sessions.server";
 import firebase from "firebase/app";
-import Button from "../../components/Button";
 
 export const meta: MetaFunction = () => {
   return {
@@ -61,52 +60,65 @@ export default function NewStory() {
   const { topics } = useRouteData<NewStoryRouteData>();
 
   return (
-    <div>
-      <Link to="/">Back</Link>
-
-      <form method="post">
-        <div>
+    <form method="post" className="space-y-4">
+      <div>
+        <input
+          name="title"
+          placeholder="Title"
+          aria-label="Title"
+          type="text"
+          required
+          className="twc-input"
+        />
+      </div>
+      <div>
+        <input
+          name="sourceUrl"
+          placeholder="Source URL"
+          aria-label="Source URL"
+          type="url"
+          required
+          className="twc-input"
+        />
+      </div>
+      <div>
+        <select
+          name="topicIds"
+          aria-label="Topics"
+          id="topicIds"
+          multiple
+          size={4}
+          className="twc-input"
+        >
+          {topics.map((topic) => (
+            <option key={topic.id} value={topic.id}>
+              {topic.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <div className="flex items-center">
           <input
-            name="title"
-            placeholder="Title"
-            aria-label="Title"
-            type="text"
-            required
+            id="sourcePaywalled"
+            name="sourcePaywalled"
+            type="checkbox"
+            className="twc-checkbox"
           />
-        </div>
-        <div>
-          <input
-            name="sourceUrl"
-            placeholder="Source URL"
-            aria-label="Source URL"
-            type="url"
-            required
-          />
-        </div>
-        <div>
-          <select
-            name="topicIds"
-            aria-label="Topics"
-            id="topicIds"
-            multiple
-            size={3}
-          >
-            {topics.map((topic) => (
-              <option key={topic.id} value={topic.id}>
-                {topic.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>
-            <input type="checkbox" name="sourcePaywalled" />
-            Source Paywalled
+          <label htmlFor="sourcePaywalled" className="ml-2 block text-sm">
+            Is this story behind a paywall?
           </label>
         </div>
+      </div>
 
-        <Button type="submit">Submit</Button>
-      </form>
-    </div>
+      <div className="flex items-center">
+        <button className="twc-button" type="submit">
+          Submit
+        </button>
+        <Link className="inline-block ml-4 hover:underline" to="/">
+          Cancel
+        </Link>
+      </div>
+    </form>
   );
 }

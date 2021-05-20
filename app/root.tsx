@@ -62,7 +62,9 @@ function Document({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex mt-4 sm:mt-0 sm:ml-8">
             <span className="shadow-sm rounded-sm">
-              <ButtonLink to="/stories/new">Submit Story</ButtonLink>
+              <Link className="twc-button" to="/stories/new">
+                Submit Story
+              </Link>
             </span>
           </div>
         </div>
