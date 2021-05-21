@@ -1,7 +1,6 @@
 import type { LinksFunction, LoaderFunction } from "remix";
 import { Meta, Links, Scripts, LiveReload, useRouteData } from "remix";
 import { Link, Outlet } from "react-router-dom";
-import ButtonLink from "./components/ButtonLink/ButtonLink";
 
 import stylesUrl from "./styles/app.css";
 import { getUser } from "./lib/sessions.server";
