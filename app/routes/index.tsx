@@ -6,8 +6,8 @@ import NewStory from "./stories/new";
 
 export let meta: MetaFunction = () => {
   return {
-    title: "Rodinia Report",
-    description: "Welcome to the Rodinia Report!",
+    title: "The Rodinia Report",
+    description: "The Rodinia Report is a public curation of environmentally focused articles that helps individuals easily stay up to date on the most recent and most inspiring undertakings around the world.",
   };
 };
 

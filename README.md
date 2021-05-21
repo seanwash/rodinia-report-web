@@ -1,6 +1,6 @@
 # The Rodinia Report
 
-The Rodinia Report is a socially curated collection of environmental and conservation based news.
+A public curation of environmentally focused articles that helps individuals easily stay up to date on the most recent and most inspiring undertakings around the world.
 
 ## Roadmap
 
