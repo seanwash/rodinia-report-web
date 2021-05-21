@@ -6,9 +6,9 @@ import {
   useRouteData,
 } from "remix";
 import { Link } from "react-router-dom";
+import firebase from "firebase/app";
 import { firestore } from "../../lib/fire";
 import { getUser } from "../../lib/sessions.server";
-import firebase from "firebase/app";
 
 export const meta: MetaFunction = () => {
   return {
@@ -99,14 +99,17 @@ export default function NewStory() {
       </div>
       <div>
         <div className="flex items-center">
-          <input
-            id="sourcePaywalled"
-            name="sourcePaywalled"
-            type="checkbox"
-            className="twc-checkbox"
-          />
-          <label htmlFor="sourcePaywalled" className="ml-2 block text-sm">
-            Is this story behind a paywall?
+          <label htmlFor="sourcePaywalled">
+            <input
+              id="sourcePaywalled"
+              name="sourcePaywalled"
+              type="checkbox"
+              className="twc-checkbox"
+            />
+
+            <span className="ml-2 block text-sm">
+              Is this story behind a paywall?
+            </span>
           </label>
         </div>
       </div>

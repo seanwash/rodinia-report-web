@@ -1,11 +1,4 @@
-import React from "react";
-import {
-  ActionFunction,
-  Form,
-  LoaderFunction,
-  redirect,
-  useRouteData,
-} from "remix";
+import { ActionFunction, Form, LoaderFunction, redirect } from "remix";
 import { getUser, sessionCookie, signIn } from "../../lib/sessions.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -23,14 +16,11 @@ export const action: ActionFunction = async ({ request }) => {
         "Set-Cookie": await sessionCookie.commitSession(session),
       },
     });
-  } else {
-    return redirect("/");
   }
+  return redirect("/");
 };
 
-export default function () {
-  const data = useRouteData();
-
+export default function SignIn() {
   return (
     <Form method="post" className="space-y-4">
       <div>
