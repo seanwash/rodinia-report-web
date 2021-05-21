@@ -2,16 +2,14 @@
   "private": true,
   "name": "rodinia-report",
   "scripts": {
-    "build": "npm run css:build && npm run remix:build",
-    "railway:build": "npx railway run npm run css:build && npm run remix:build",
-    "dev": "concurrently \"npm:remix:dev\" \"npm:css:dev\"",
-    "railway:dev": "npx railway run concurrently \"npm:remix:dev\" \"npm:css:dev\"",
-    "start": "remix-serve build",
-    "railway:start": "npx railway run remix-serve build",
+    "dev": "concurrently \"npm:remix:dev\" \"npm:css:dev\" -c \"bgRed,bgBlue\"",
+    "dev:railway": "railway run concurrently \"npm:remix:dev\" \"npm:css:dev\" -c \"bgRed,bgBlue\"",
     "remix:dev": "npx remix run",
     "remix:build": "npx remix build",
-    "css:dev": "npx railway run postcss styles --base styles --dir app/styles -w",
-    "css:build": "postcss styles --base styles --dir app/styles --env production"
+    "css:dev": "postcss styles --base styles --dir app/styles -w",
+    "css:build": "postcss styles --base styles --dir app/styles --env production",
+    "build": "npm run css:build && npm run remix:build",
+    "start": "remix-serve build"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
