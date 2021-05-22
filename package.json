@@ -8,6 +8,8 @@
     "remix:build": "npx remix build",
     "css:dev": "postcss styles --base styles --dir app/styles -w",
     "css:build": "postcss styles --base styles --dir app/styles --env production",
+    "lint": "eslint --ext \".ts,.tsx,.js,.jsx\" app/",
+    "lint:railway": "railway run eslint --ext \".ts,.tsx,.js,.jsx\" app/",
     "build": "npm run css:build && npm run remix:build",
     "start": "remix-serve build"
   },
@@ -20,20 +22,32 @@
     "@sentry/node": "^6.4.0",
     "@sentry/react": "^6.4.0",
     "@sentry/tracing": "^6.4.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
     "firebase": "^8.5.0",
     "firebase-admin": "^9.8.0",
+    "@types/react": "^17.0.1",
     "react": "^17.0.1",
+    "@types/react-dom": "^17.0.5",
     "react-dom": "^17.0.1",
     "react-router-dom": "^6.0.0-beta.0",
     "remix": "0.17.0"
   },
   "devDependencies": {
     "@remix-run/dev": "0.17.0",
-    "@types/react": "^17.0.1",
-    "@types/react-dom": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
     "autoprefixer": "^10.2.5",
     "concurrently": "^6.1.0",
     "cssnano": "^5.0.2",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.3",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "postcss": "^8.2.15",
     "postcss-cli": "^8.3.1",
     "prettier": "^2.2.1",
@@ -41,7 +55,7 @@
     "typescript": "^4.1.2"
   },
   "engines": {
-    "node": "14"
+    "node": ">=14"
   },
   "sideEffects": false
 }

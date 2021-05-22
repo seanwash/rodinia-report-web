@@ -11,6 +11,29 @@ if (process.env.SESSION_SECRET) {
 }
 
 /**
+ * Initializes and returns a new instance of firebase-admin.
+ *
+ * TODO: Move this elsewhere closer to lib/fire.
+ */
+function fireAdmin() {
+  if (admin.apps.length > 0) return admin;
+
+  const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+
+  if (!serviceAccountKey) {
+    throw new Error(
+      `FIREBASE_SERVICE_ACCOUNT_KEY env variable is required for auth.`,
+    );
+  }
+
+  const serviceAccount = JSON.parse(serviceAccountKey);
+
+  return admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
+
+/**
  * Utility used for operating on the user session cookie.
  */
 export const sessionCookie = createCookieSessionStorage({
@@ -49,16 +72,15 @@ export async function signIn(request: Request) {
     }
 
     return { ok: false, session };
-  } else {
-    return { ok: false, session };
   }
+  return { ok: false, session };
 }
 
 /**
  * Creates a new Firebase user account.
  */
 export async function signUp(email: string, password: string) {
-  return await fireAdmin().auth().createUser({
+  return fireAdmin().auth().createUser({
     email,
     emailVerified: false,
     password,
@@ -111,26 +133,3 @@ export async function getUser(request: Request) {
 
 // TODO: Route Guard. We need a fn that we can wrap the contents of a loader
 //       in to ensure that a user is authed etc before they can access.
-
-/**
- * Initializes and returns a new instance of firebase-admin.
- *
- * TODO: Move this elsewhere closer to lib/fire.
- */
-function fireAdmin() {
-  if (admin.apps.length > 0) return admin;
-
-  const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-
-  if (!serviceAccountKey) {
-    throw new Error(
-      `FIREBASE_SERVICE_ACCOUNT_KEY env variable is required for auth.`,
-    );
-  }
-
-  const serviceAccount = JSON.parse(serviceAccountKey);
-
-  return admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-}

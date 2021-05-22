@@ -1,4 +1,3 @@
-import React from "react";
 import { ActionFunction, Form, redirect } from "remix";
 import { signUp } from "../../lib/sessions.server";
 
@@ -11,7 +10,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect("/");
 };
 
-export default function () {
+export default function SignUp() {
   return (
     <Form method="post" className="space-y-4">
       <div>
