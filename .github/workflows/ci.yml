@@ -5,21 +5,20 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: ⬇️ Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: ⎔ Setup node
+      - name: Setup node
         uses: actions/setup-node@v1
         with:
           node-version: 15
 
-      - name: 📥 Download deps
+      - name: Download deps
         run: bahmutov/npm-install@v1
 
-      - name: ✅ Type Check
+      - name: Type Check
         run: tsc
 
-      - name: 🐞 Lint
+      - name: Lint
         run: npm run lint
