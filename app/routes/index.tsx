@@ -1,6 +1,6 @@
 import type { MetaFunction, LoaderFunction } from "remix";
 import { useRouteData } from "remix";
-import { ClockIcon, GlobeAltIcon } from "@heroicons/react/outline";
+import { ClockIcon, GlobeAltIcon } from "../components/icons";
 import { firestore } from "../lib/fire";
 
 export const meta: MetaFunction = () => {
@@ -17,7 +17,6 @@ export const loader: LoaderFunction = async () => {
     .orderBy("createdAt", "desc")
     .get();
   const stories = response.docs.map((doc) => doc.data());
-
   return { stories };
 };
 
