@@ -1,9 +1,8 @@
 import type { LinksFunction, LoaderFunction } from "remix";
 import { Meta, Links, Scripts, LiveReload, useRouteData } from "remix";
 import { Link, Outlet } from "react-router-dom";
-
-import stylesUrl from "./styles/app.css";
 import { getUser } from "./lib/sessions.server";
+import stylesUrl from "./styles/app.css";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
