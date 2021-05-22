@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import firebaseAdmin from "firebase-admin";
 // eslint-disable-next-line import/no-duplicates
 import "firebase/auth";
 // eslint-disable-next-line import/no-duplicates
@@ -15,28 +16,48 @@ const config = {
   appId: process.env.FIREBASE_APP_ID,
 };
 
-const fire = firebase;
+export const fire = firebase;
 
 if (fire.apps.length === 0) {
   fire.initializeApp(config);
-}
+  fire.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 
-fire.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+  // @ts-ignore
+  if (process.env.NODE_ENV === "development") {
+    // NOTE: disableWarnings hides a banner added to the page that warns when the
+    // auth emulator is being used. It can be disabled as below, but TS doesn't
+    // seem to know about the config options that can be passed in.
+    // @ts-ignore
+    fire.auth().useEmulator("http://localhost:9099", { disableWarnings: true });
+    fire.firestore().useEmulator("localhost", 8080);
+  }
+}
 
 export const auth = fire.auth();
 export const firestore = fire.firestore();
 export const storage = fire.storage();
+export type Timestamp = firebase.firestore.Timestamp;
 
-// TODO: I was having some trouble getting the firebase emulator to work. Leaving
-//       this commented code in here for now so I can revisit.
-//
-// if (process.env.DEV) {
-//   // NOTE: disableWarnings hides a banner added to the page that warns when the
-//   // auth emulator is being used. It can be disabled as below, but TS doesn't
-//   // seem to know about the config options that can be passed in.
-//   // @ts-ignore
-//   fire.auth().useEmulator('http://localhost:9099', { disableWarnings: true });
-//   fire.firestore().useEmulator('localhost', 8080);
-// }
+/**
+ * Initializes and returns a new instance of firebase-admin.
+ */
+const buildAdmin = () => {
+  if (firebaseAdmin.apps.length > 0) return firebaseAdmin;
 
-export default fire;
+  const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+
+  if (!serviceAccountKey) {
+    throw new Error(
+      `FIREBASE_SERVICE_ACCOUNT_KEY env variable is required for auth.`,
+    );
+  }
+
+  const serviceAccount = JSON.parse(serviceAccountKey);
+
+  return firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount),
+  });
+};
+
+export const admin = buildAdmin();
+export type UserRecord = firebaseAdmin.auth.UserRecord;
