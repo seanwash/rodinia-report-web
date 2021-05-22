@@ -5,11 +5,19 @@
 /* Components */
 
 .twc-input {
-  @apply appearance-none block w-full px-3 py-2 border border-gray-300 rounded-sm shadow-sm placeholder-gray-400 focus:outline-none focus:ring-el-paso focus:border-el-paso sm:text-sm;
+  @apply bg-white text-left appearance-none block w-full px-3 py-2 border border-gray-300 rounded-sm shadow-sm placeholder-gray-400 focus:outline-none focus:ring-el-paso focus:border-el-paso sm:text-sm;
+}
+
+.twc-select {
+  @apply bg-white text-left appearance-none block w-full px-3 py-2 border border-gray-300 rounded-sm shadow-sm placeholder-gray-400 focus:outline-none focus:ring-el-paso focus:border-el-paso sm:text-sm;
+}
+
+.twc-select-dropdown {
+  @apply absolute bg-white p-4 mt-1 shadow rounded-sm border border-el-paso sm:text-sm;
 }
 
 .twc-checkbox {
-  @apply appearance-none h-4 w-4 text-el-paso bg-white border border-el-paso shadow-sm focus:ring-el-paso-600 border-gray-300 rounded-sm;
+  @apply h-4 w-4 text-el-paso bg-white border border-el-paso shadow-sm focus:ring-el-paso-600 border-gray-300 rounded-sm;
 }
 
 .twc-button {

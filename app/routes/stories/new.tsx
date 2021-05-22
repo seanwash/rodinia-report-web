@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import { firestore } from "../../lib/fire";
 import { getUser } from "../../lib/sessions.server";
+import { ChevronDown } from "../../components/icons";
 
 export const meta: MetaFunction = () => {
   return {
@@ -46,7 +47,7 @@ export const action: ActionFunction = async ({ request }) => {
     disabled: false,
     createdAt: new Date(),
     userId: user?.user.uid,
-    topicIds: params.getAll("topicIds"),
+    topicIds: params.getAll("topicId"),
   });
 
   return redirect("/");
@@ -81,13 +82,11 @@ export default function NewStory() {
           className="twc-input"
         />
       </div>
-      <div>
+      <div className="relative flex items-center">
         <select
-          name="topicIds"
+          name="topicId"
           aria-label="Topics"
-          id="topicIds"
-          multiple
-          size={4}
+          id="topicId"
           className="twc-input"
         >
           {topics.map((topic) => (
@@ -96,6 +95,7 @@ export default function NewStory() {
             </option>
           ))}
         </select>
+        <ChevronDown className="text-gray-400 h-full w-4 absolute right-3 top-0 pointer-events-none" />
       </div>
       <div>
         <div className="flex items-center">
