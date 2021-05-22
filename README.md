@@ -40,9 +40,15 @@ From your terminal:
 
 ```sh
 npm run dev
+npm run firebase:emulators
+npm run db:seed
 ```
 
-This starts your app in development mode and starts postcss in watch mode.
+This starts your app in development mode, starts postcss in watch mode, and starts the Firebase emulators. Then, `db:seed` will create some basic seed data to get you started.
+
+### Firebase
+
+The backend of Rodinia is powered by Firebase. Firebase provides an [emulator suite](https://firebase.google.com/docs/emulator-suite) so that we can work against locally running services. Rodinia is configured to use the emulators in development.
 
 ### Styles
 
