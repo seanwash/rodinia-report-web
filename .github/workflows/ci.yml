@@ -16,6 +16,9 @@ jobs:
 
       - name: Download deps
         uses: bahmutov/npm-install@v1
+        
+      - name: Build
+        run: npm run build
 
       - name: Type Check
         run: tsc --noEmit
