@@ -3,6 +3,8 @@ import type { EntryContext } from "remix";
 import { RemixServer } from "remix";
 import * as Sentry from "@sentry/node";
 
+require("dotenv").config();
+
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   tracesSampleRate: 1.0,
