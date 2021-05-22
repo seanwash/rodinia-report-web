@@ -1,7 +1,7 @@
 name: CI
 on: push
 env:
-  REMIX_TOKEN: ${{ secrets.REMIX_REGISTRY_TOKEN }}
+  REMIX_TOKEN: ${{ secrets.REMIX_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-latest
