@@ -18,7 +18,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Type Check
-        run: tsc
+        run: tsc --noEmit
 
       - name: Lint
         run: npm run lint
