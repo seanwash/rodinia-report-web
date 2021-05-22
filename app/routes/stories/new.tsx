@@ -99,7 +99,7 @@ export default function NewStory() {
       </div>
       <div>
         <div className="flex items-center">
-          <label htmlFor="sourcePaywalled">
+          <label htmlFor="sourcePaywalled" className="flex items-center">
             <input
               id="sourcePaywalled"
               name="sourcePaywalled"
@@ -107,7 +107,7 @@ export default function NewStory() {
               className="twc-checkbox"
             />
 
-            <span className="ml-2 block text-sm">
+            <span className="ml-2 inline-block text-sm">
               Is this story behind a paywall?
             </span>
           </label>

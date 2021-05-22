@@ -1,36 +1,12 @@
-import admin from "firebase-admin";
 import { Request, Session } from "remix";
 import { createCookieSessionStorage } from "@remix-run/node";
-import { auth, firestore } from "./fire";
+import { auth, admin, firestore } from "./fire";
 
 let secret;
 if (process.env.SESSION_SECRET) {
   secret = process.env.SESSION_SECRET;
 } else {
   throw new Error("Must set SESSION_SECRET");
-}
-
-/**
- * Initializes and returns a new instance of firebase-admin.
- *
- * TODO: Move this elsewhere closer to lib/fire.
- */
-function fireAdmin() {
-  if (admin.apps.length > 0) return admin;
-
-  const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-
-  if (!serviceAccountKey) {
-    throw new Error(
-      `FIREBASE_SERVICE_ACCOUNT_KEY env variable is required for auth.`,
-    );
-  }
-
-  const serviceAccount = JSON.parse(serviceAccountKey);
-
-  return admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
 }
 
 /**
@@ -60,7 +36,7 @@ export async function signIn(request: Request) {
   if (userToken) {
     // Set session expiration to 5 days.
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
-    const cookie = await fireAdmin()
+    const cookie = await admin
       .auth()
       .createSessionCookie(userToken, { expiresIn });
 
@@ -80,7 +56,7 @@ export async function signIn(request: Request) {
  * Creates a new Firebase user account.
  */
 export async function signUp(email: string, password: string) {
-  return fireAdmin().auth().createUser({
+  return await admin.auth().createUser({
     email,
     emailVerified: false,
     password,
@@ -110,7 +86,7 @@ async function getUserSession(request: Request) {
   if (!token) return null;
 
   try {
-    return await fireAdmin().auth().verifySessionCookie(token);
+    return await admin.auth().verifySessionCookie(token);
   } catch {
     return null;
   }
