@@ -1,17 +1,17 @@
 import type { MetaFunction, LoaderFunction } from "remix";
 import { useRouteData } from "remix";
-import { firestore } from "../lib/fire";
 import { ClockIcon, GlobeAltIcon } from "@heroicons/react/outline";
-import NewStory from "./stories/new";
+import { firestore } from "../lib/fire";
 
-export let meta: MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return {
-    title: "Rodinia Report",
-    description: "Welcome to the Rodinia Report!",
+    title: "The Rodinia Report",
+    description:
+      "The Rodinia Report is a public curation of environmentally focused articles that helps individuals easily stay up to date on the most recent and most inspiring undertakings around the world.",
   };
 };
 
-export let loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async () => {
   const response = await firestore
     .collection("stories")
     .orderBy("createdAt", "desc")
@@ -52,7 +52,7 @@ export default function Index() {
                 <a
                   href={story.sourceUrl}
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   className="hover:underline"
                 >
                   {story.title}
