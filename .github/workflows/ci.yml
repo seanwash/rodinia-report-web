@@ -1,17 +1,25 @@
 name: CI
 on: push
+env:
+  REMIX_TOKEN: ${{ secrets.REMIX_REGISTRY_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
 
-      - name: Install
-        run: npm install
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15
 
-      - name: Type Check
+      - name: 📥 Download deps
+        run: bahmutov/npm-install@v1
+
+      - name: ✅ Type Check
         run: tsc
 
-      - name: Lint
+      - name: 🐞 Lint
         run: npm run lint
