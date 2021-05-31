@@ -16,7 +16,7 @@ jobs:
 
       - name: Download deps
         uses: bahmutov/npm-install@v1
-        
+
       - name: Build
         run: npm run build
 
@@ -25,3 +25,6 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Deploy
+        run: railway up
