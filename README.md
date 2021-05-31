@@ -5,18 +5,27 @@ and most inspiring undertakings around the world.
 
 ## Road map
 
-It's still early days for Rodinia so we don't have a formal road map just yet, but we're keeping track of a number of
+It's still early days for Rodinia, so we don't have a formal road map just yet, but we're keeping track of a number of
 items that are needed to reach MVP status [here](https://github.com/seanwash/rodinia-report-web/projects/1).
 
 ## Setup
 
+### Environment Variables
+
+Rodinia uses `dotenv` to load environment variables at runtime. You'll need to duplicate `.env.example` to `.env` and then
+update the new file with the relevant values.
+
 ### Install dependencies
 
-Note that Rodinia uses [Remix.run](https://remix.run) and you'll need access to an npm registry token to install it.
+Note that Rodinia uses [Remix.run](https://remix.run) and you'll need access to a npm registry token to install it.
 
 ```bash
   npm install
 ```
+
+### Setup Postgres
+
+The primary datastore for Rodinia is Postgres, and you'll need to have it setup and running locally.
 
 ### Prepare Firebase
 
