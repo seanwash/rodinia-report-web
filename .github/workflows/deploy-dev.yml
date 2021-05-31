@@ -23,4 +23,4 @@ jobs:
         run: npm run build
 
       - name: Deploy
-        run: npx railway up
+        run: RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} npx railway up
