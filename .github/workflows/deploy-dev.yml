@@ -2,9 +2,11 @@ name: CI
 on: push
 env:
   REMIX_TOKEN: ${{ secrets.REMIX_TOKEN }}
+  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: 'development'
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -20,8 +22,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Type Check
-        run: tsc --noEmit
-
-      - name: Lint
-        run: npm run lint
+      - name: Deploy
+        run: npx railway up
