@@ -25,3 +25,24 @@ jobs:
 
       - name: Lint
         run: npm run lint
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        run: RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} npx railway up
