@@ -2,6 +2,7 @@ name: CI
 on: push
 env:
   REMIX_TOKEN: ${{ secrets.REMIX_TOKEN }}
+  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-latest
