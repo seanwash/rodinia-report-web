@@ -28,4 +28,4 @@ jobs:
         run: npm run lint
 
       - name: Deploy
-        run: railway up
+        run: npx railway up
