@@ -22,11 +22,25 @@ export const sessionCookie = createCookieSessionStorage({
 });
 
 /**
+ * Returns a Session from a given Request.
+ */
+export const getSession = async (request: Request) => {
+  return await sessionCookie.getSession(request.headers.get("cookie"));
+};
+
+/**
+ * Commits an updated Session back to the current session Cookie.
+ */
+export const commitSession = async (session: Session) => {
+  return await sessionCookie.commitSession(session);
+};
+
+/**
  * Verifies the given credentials and creates a new Firebase Session Cookie.
  */
 export async function signIn(request: Request) {
   const body = new URLSearchParams(await request.text());
-  const session = await sessionCookie.getSession(request.headers.get("cookie"));
+  const session = await getSession(request);
   const userCredential = await auth.signInWithEmailAndPassword(
     body.get("email")!,
     body.get("password")!,
@@ -44,12 +58,13 @@ export async function signIn(request: Request) {
       // TODO: Should this just be a token instead? I haven't figured out exactly
       //       how to use a firebase cookie with remix.
       session.set("firebaseCookie", cookie);
-      return { ok: true, session };
+      return session;
     }
 
-    return { ok: false, session };
+    return session;
   }
-  return { ok: false, session };
+
+  return session;
 }
 
 /**

@@ -1,14 +1,14 @@
 import type { LoaderFunction } from "remix";
 import { redirect } from "remix";
-import { sessionCookie, signOut } from "../../lib/sessions.server";
+import { commitSession, getSession, signOut } from "../../lib/sessions.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const session = await sessionCookie.getSession(request.headers.get("cookie"));
+  const session = await getSession(request);
   await signOut(session);
 
   return redirect("/", {
     headers: {
-      "Set-Cookie": await sessionCookie.commitSession(session),
+      "Set-Cookie": await commitSession(session),
     },
   });
 };
