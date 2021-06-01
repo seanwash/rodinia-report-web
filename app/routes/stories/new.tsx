@@ -21,7 +21,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   if (!user) return redirect("/sessions");
 
-  const topics = await db.topic.findMany();
+  const topics = await db.topic.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
 
   return { topics };
 };
