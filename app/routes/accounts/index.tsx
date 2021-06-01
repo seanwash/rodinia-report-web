@@ -32,8 +32,17 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     const body = new URLSearchParams(await request.text());
     await signUp(body.get("email")!, body.get("password")!);
+    const session = await getSession(request);
+    session.flash(
+      "success",
+      "Your account has been created! Please sign in to continue.",
+    );
 
-    return redirect("/");
+    return redirect("/sessions", {
+      headers: {
+        "Set-cookie": await commitSession(session),
+      },
+    });
   } catch (err) {
     const session = await getSession(request);
     session.flash("error", err.toString());
