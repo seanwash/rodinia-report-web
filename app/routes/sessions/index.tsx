@@ -19,7 +19,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request);
 
   return json(
-    { error: session.get("error") },
+    { success: session.get("success"), error: session.get("error") },
     {
       headers: {
         "Set-Cookie": await commitSession(session),
@@ -50,14 +50,20 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 interface SignInParams {
+  success?: string;
   error?: string;
 }
 
 export default function SignIn() {
-  const { error } = useRouteData<SignInParams>();
+  const { error, success } = useRouteData<SignInParams>();
 
   return (
     <>
+      {success && (
+        <div className="p-3 bg-green-700 text-white rounded-sm shadow-sm mb-4">
+          {success}
+        </div>
+      )}
       {error && (
         <div className="p-3 bg-red-600 text-white rounded-sm shadow-sm mb-4">
           {error}
