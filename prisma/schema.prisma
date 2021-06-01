@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Stories -----------------------------------------------
+
+model Story {
+  id              Int      @id @default(autoincrement())
+  sourceTitle     String
+  sourceUrl       String   @unique
+  sourcePaywalled Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String
+
+  topics Topic[]
+
+  @@index([userId])
+}
+
+// Topics -----------------------------------------------
+
+model Topic {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stories Story[]
+}

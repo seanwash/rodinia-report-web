@@ -6,10 +6,9 @@ import {
   useRouteData,
 } from "remix";
 import { Link } from "react-router-dom";
-import firebase from "firebase/app";
-import { firestore } from "../../lib/fire";
 import { getUser } from "../../lib/sessions.server";
 import { ChevronDown } from "../../components/icons";
+import { db, Topic } from "../../lib/db";
 
 export const meta: MetaFunction = () => {
   return {
@@ -22,11 +21,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   if (!user) return redirect("/sessions");
 
-  const topicSnapshot = await firestore.collection("topics").get();
-  const topics = topicSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  const topics = await db.topic.findMany();
 
   return { topics };
 };
@@ -40,21 +35,31 @@ export const action: ActionFunction = async ({ request }) => {
 
   // TODO: Error handling?
   // TODO: Validation?
-  await firestore.collection("stories").add({
-    title: params.get("title"),
-    sourceUrl: params.get("sourceUrl"),
-    sourcePaywalled,
-    disabled: false,
-    createdAt: new Date(),
-    userId: user?.user.uid,
-    topicIds: params.getAll("topicId"),
-  });
+  try {
+    await db.story.create({
+      data: {
+        sourceTitle: params.get("title")!,
+        sourceUrl: params.get("sourceUrl")!,
+        sourcePaywalled,
+        userId: user.user.uid,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        topics: {
+          connect: params.getAll("topicId").map((id) => ({ id: Number(id) })),
+        },
+      },
+    });
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log("-----", "action", e);
+    return redirect("/stories/new");
+  }
 
   return redirect("/");
 };
 
 interface NewStoryRouteData {
-  topics: firebase.firestore.DocumentData[];
+  topics: Topic[];
 }
 
 export default function NewStory() {
@@ -88,7 +93,11 @@ export default function NewStory() {
           aria-label="Topics"
           id="topicId"
           className="twc-input"
+          required
         >
+          <option value="" selected disabled>
+            Select a topic
+          </option>
           {topics.map((topic) => (
             <option key={topic.id} value={topic.id}>
               {topic.name}

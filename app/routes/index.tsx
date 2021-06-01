@@ -1,7 +1,7 @@
 import type { MetaFunction, LoaderFunction } from "remix";
 import { useRouteData } from "remix";
 import { ClockIcon, GlobeAltIcon } from "../components/icons";
-import { firestore } from "../lib/fire";
+import { db, StoryWithTopics } from "../lib/db";
 
 export const meta: MetaFunction = () => {
   return {
@@ -12,39 +12,46 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = async () => {
-  const response = await firestore
-    .collection("stories")
-    .orderBy("createdAt", "desc")
-    .get();
-  const stories = response.docs.map((doc) => doc.data());
+  const stories = await db.story.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      topics: true,
+    },
+  });
+
   return { stories };
 };
 
-export default function Index() {
-  let { stories } = useRouteData();
+interface IndexRouteData {
+  stories: StoryWithTopics[];
+}
 
-  // TODO: No any here.
-  stories = stories.map((story: any) => {
+export default function Index() {
+  const { stories } = useRouteData<IndexRouteData>();
+
+  const storyRenderData = stories.map((story) => {
     const sourceUrl = new URL(story.sourceUrl);
     sourceUrl.searchParams.append("utm_source", "rodinia_report");
     sourceUrl.searchParams.append("ref", "rodinia_report");
 
     const createdAt = new Intl.DateTimeFormat().format(
-      new Date(story.createdAt.seconds * 1000),
+      new Date(story.createdAt),
     );
 
     return {
       ...story,
-      sourceUrl,
       createdAt,
+      sourceUrl: sourceUrl.toString(),
       sourceHostname: new URL(story.sourceUrl).hostname,
     };
   });
 
   return (
     <ul className="bg-alabaster-300 shadow-sm rounded-sm divide-y divide-alabaster">
-      {stories?.map((story: any) => (
-        <li key={story.title}>
+      {storyRenderData?.map((story) => (
+        <li key={story.sourceTitle}>
           <div className="flex items-center space-x-4">
             <div className="p-4">
               <h3>
@@ -54,7 +61,7 @@ export default function Index() {
                   rel="noopener noreferrer"
                   className="hover:underline"
                 >
-                  {story.title}
+                  {story.sourceTitle}
                 </a>
               </h3>
 
@@ -67,6 +74,13 @@ export default function Index() {
                   <GlobeAltIcon className="h-5 w-5 stroke-current mr-2" />
                   <span>{story.sourceHostname}</span>
                 </div>
+                {story.topics.length > 0 && (
+                  <ul>
+                    {story.topics.map((topic) => (
+                      <li key={topic.id}>{topic.name}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </div>
