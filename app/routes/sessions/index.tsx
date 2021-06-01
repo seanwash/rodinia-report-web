@@ -39,7 +39,7 @@ export const action: ActionFunction = async ({ request }) => {
     });
   } catch (err) {
     const session = await getSession(request);
-    session.flash("error", "Invalid username or password.");
+    session.flash("error", "Error: Invalid username or password.");
 
     return redirect("/sessions", {
       headers: {
@@ -59,7 +59,9 @@ export default function SignIn() {
   return (
     <>
       {error && (
-        <div className="p-3 bg-red-600 text-white rounded-sm mb-4">{error}</div>
+        <div className="p-3 bg-red-600 text-white rounded-sm shadow-sm mb-4">
+          {error}
+        </div>
       )}
       <form method="post" className="space-y-4">
         <div>
