@@ -1,6 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind screens;
 
 /* Components */
 
@@ -27,3 +26,4 @@
 /* End Components */
 
 @tailwind utilities;
+@tailwind screens;
