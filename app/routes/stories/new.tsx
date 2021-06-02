@@ -12,7 +12,7 @@ import { db, Topic } from "../../lib/db";
 
 export const meta: MetaFunction = () => {
   return {
-    title: "New Story",
+    title: "Submit Story",
     description: "Share a new story",
   };
 };
@@ -70,71 +70,76 @@ export default function NewStory() {
   const { topics } = useRouteData<NewStoryRouteData>();
 
   return (
-    <form method="post" className="space-y-4">
-      <div>
-        <input
-          name="title"
-          placeholder="Title"
-          aria-label="Title"
-          type="text"
-          required
-          className="twc-input"
-        />
-      </div>
-      <div>
-        <input
-          name="sourceUrl"
-          placeholder="Source URL"
-          aria-label="Source URL"
-          type="url"
-          required
-          className="twc-input"
-        />
-      </div>
-      <div className="relative flex items-center">
-        <select
-          name="topicId"
-          aria-label="Topics"
-          id="topicId"
-          className="twc-input"
-          required
-        >
-          <option value="" selected disabled>
-            Select a topic
-          </option>
-          {topics.map((topic) => (
-            <option key={topic.id} value={topic.id}>
-              {topic.name}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="text-gray-400 h-full w-4 absolute right-3 top-0 pointer-events-none" />
-      </div>
-      <div>
-        <div className="flex items-center">
-          <label htmlFor="sourcePaywalled" className="flex items-center">
-            <input
-              id="sourcePaywalled"
-              name="sourcePaywalled"
-              type="checkbox"
-              className="twc-checkbox"
-            />
+    <>
+      <h2 className="text-2xl leading-7 mb-4">Submit Story</h2>
 
-            <span className="ml-2 inline-block text-sm">
-              Is this story behind a paywall?
-            </span>
-          </label>
+      <form method="post" className="space-y-4">
+        <div>
+          <input
+            name="title"
+            placeholder="Title"
+            aria-label="Title"
+            type="text"
+            required
+            className="twc-input"
+          />
         </div>
-      </div>
+        <div>
+          <input
+            name="sourceUrl"
+            placeholder="Source URL"
+            aria-label="Source URL"
+            type="url"
+            required
+            className="twc-input"
+          />
+        </div>
+        <div className="relative flex items-center">
+          <select
+            name="topicId"
+            aria-label="Topics"
+            id="topicId"
+            className="twc-input"
+            required
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select a topic
+            </option>
+            {topics.map((topic) => (
+              <option key={topic.id} value={topic.id}>
+                {topic.name}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="text-gray-400 h-full w-4 absolute right-3 top-0 pointer-events-none" />
+        </div>
+        <div>
+          <div className="flex items-center">
+            <label htmlFor="sourcePaywalled" className="flex items-center">
+              <input
+                id="sourcePaywalled"
+                name="sourcePaywalled"
+                type="checkbox"
+                className="twc-checkbox"
+              />
 
-      <div className="flex items-center">
-        <button className="twc-button" type="submit">
-          Submit
-        </button>
-        <Link className="inline-block ml-4 hover:underline" to="/">
-          Cancel
-        </Link>
-      </div>
-    </form>
+              <span className="ml-2 inline-block text-sm">
+                Is this story behind a paywall?
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div className="flex items-center">
+          <button className="twc-button" type="submit">
+            Submit
+          </button>
+          <Link className="inline-block ml-4 hover:underline" to="/">
+            Cancel
+          </Link>
+        </div>
+      </form>
+    </>
   );
 }

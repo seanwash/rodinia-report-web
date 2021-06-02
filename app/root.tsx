@@ -26,6 +26,7 @@ function Document({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <Meta />
         <Links />
@@ -47,24 +48,6 @@ function Document({ children }: { children: React.ReactNode }) {
                 </>
               )}
             </nav>
-          </div>
-        </div>
-
-        <div className="container mx-auto sm:flex items-center justify-between p-4">
-          <div className="flex-1 min-w-0">
-            <h2 className="text-2xl leading-7 text-el-paso sm:text-3xl sm:leading-9 max-w-4xl">
-              The <span className="font-bold">Rodinia Report</span> is a public
-              curation of environmentally focused articles that helps
-              individuals easily stay up to date on the most recent and most
-              inspiring undertakings around the world.
-            </h2>
-          </div>
-          <div className="flex mt-4 sm:mt-0 sm:ml-8">
-            <span className="shadow-sm rounded-sm">
-              <Link className="twc-button" to="/stories/new">
-                Submit Story
-              </Link>
-            </span>
           </div>
         </div>
 

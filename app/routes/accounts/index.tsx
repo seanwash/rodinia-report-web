@@ -64,11 +64,14 @@ export default function SignUp() {
 
   return (
     <>
+      <h2 className="text-2xl leading-7 mb-4">Create an Account</h2>
+
       {error && (
         <div className="p-3 bg-red-600 text-white rounded-sm shadow-sm mb-4">
           {error}
         </div>
       )}
+
       <form method="post" className="space-y-4">
         <div>
           <input

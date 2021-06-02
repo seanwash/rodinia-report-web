@@ -59,16 +59,20 @@ export default function SignIn() {
 
   return (
     <>
+      <h2 className="text-2xl leading-7 mb-4">Sign In</h2>
+
       {success && (
         <div className="p-3 bg-green-700 text-white rounded-sm shadow-sm mb-4">
           {success}
         </div>
       )}
+
       {error && (
         <div className="p-3 bg-red-600 text-white rounded-sm shadow-sm mb-4">
           {error}
         </div>
       )}
+
       <form method="post" className="space-y-4">
         <div>
           <input
