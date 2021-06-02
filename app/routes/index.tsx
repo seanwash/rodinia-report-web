@@ -1,8 +1,8 @@
 import type { MetaFunction, LoaderFunction } from "remix";
 import { useRouteData } from "remix";
+import { Link } from "react-router-dom";
 import { ClockIcon, GlobeAltIcon } from "../components/icons";
 import { db, StoryWithTopics } from "../lib/db";
-import { Link } from "react-router-dom";
 
 export const meta: MetaFunction = () => {
   return {
