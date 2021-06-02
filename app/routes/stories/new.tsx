@@ -98,8 +98,9 @@ export default function NewStory() {
           id="topicId"
           className="twc-input"
           required
+          defaultValue=""
         >
-          <option value="" selected disabled>
+          <option value="" disabled>
             Select a topic
           </option>
           {topics.map((topic) => (
