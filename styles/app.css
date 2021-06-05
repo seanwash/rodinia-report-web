@@ -16,7 +16,7 @@
 }
 
 .twc-checkbox {
-  @apply h-4 w-4 text-el-paso bg-white border border-el-paso shadow-sm focus:ring-el-paso-600 border-gray-300 rounded-sm;
+  @apply h-4 w-4 text-el-paso bg-white border border-el-paso shadow-sm focus:ring-el-paso-600 rounded-sm;
 }
 
 .twc-button {
