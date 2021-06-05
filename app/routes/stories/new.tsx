@@ -7,7 +7,6 @@ import {
 } from "remix";
 import { Link } from "react-router-dom";
 import { getUser } from "../../lib/sessions.server";
-import { ChevronDown } from "../../components/icons";
 import { db, Topic } from "../../lib/db";
 
 export const meta: MetaFunction = () => {
@@ -97,22 +96,19 @@ export default function NewStory() {
         <div className="relative flex items-center">
           <select
             name="topicId"
-            aria-label="Topics"
+            multiple
+            aria-label="Related Topics"
             id="topicId"
             className="twc-input"
             required
-            defaultValue=""
+            defaultValue={[]}
           >
-            <option value="" disabled>
-              Select a topic
-            </option>
             {topics.map((topic) => (
               <option key={topic.id} value={topic.id}>
                 {topic.name}
               </option>
             ))}
           </select>
-          <ChevronDown className="text-gray-400 h-full w-4 absolute right-3 top-0 pointer-events-none" />
         </div>
         <div>
           <div className="flex items-center">
