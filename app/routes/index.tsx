@@ -3,6 +3,7 @@ import { useRouteData } from "remix";
 import { Link } from "react-router-dom";
 import { ClockIcon, GlobeAltIcon } from "../components/icons";
 import { db, StoryWithTopics } from "../lib/db";
+import StoryListItem from "../components/StoryListItem/StoryListItem";
 
 export const meta: MetaFunction = () => {
   return {
@@ -32,23 +33,6 @@ interface IndexRouteData {
 export default function Index() {
   const { stories } = useRouteData<IndexRouteData>();
 
-  const storyRenderData = stories.map((story) => {
-    const sourceUrl = new URL(story.sourceUrl);
-    sourceUrl.searchParams.append("utm_source", "rodinia_report");
-    sourceUrl.searchParams.append("ref", "rodinia_report");
-
-    const createdAt = new Intl.DateTimeFormat().format(
-      new Date(story.createdAt),
-    );
-
-    return {
-      ...story,
-      createdAt,
-      sourceUrl: sourceUrl.toString(),
-      sourceHostname: new URL(story.sourceUrl).hostname,
-    };
-  });
-
   return (
     <>
       <div className="container mx-auto sm:flex items-center justify-between">
@@ -70,40 +54,9 @@ export default function Index() {
       </div>
 
       <ul className="bg-alabaster-300 shadow-sm rounded-sm divide-y divide-alabaster mt-8">
-        {storyRenderData?.map((story) => (
+        {stories?.map((story) => (
           <li key={story.sourceTitle}>
-            <div className="flex items-center space-x-4">
-              <div className="p-4">
-                <h3>
-                  <a
-                    href={story.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                  >
-                    {story.sourceTitle}
-                  </a>
-                </h3>
-
-                <div className="flex items-center mt-2 space-x-4 leading-5 text-gray-500">
-                  <div className="flex items-center text-sm">
-                    <ClockIcon className="h-5 w-5 stroke-current mr-2" />
-                    <span>{story.createdAt}</span>
-                  </div>
-                  <div className="flex items-center text-sm">
-                    <GlobeAltIcon className="h-5 w-5 stroke-current mr-2" />
-                    <span>{story.sourceHostname}</span>
-                  </div>
-                  {story.topics.length > 0 && (
-                    <ul>
-                      {story.topics.map((topic) => (
-                        <li key={topic.id}>{topic.name}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
-            </div>
+            <StoryListItem story={story} />
           </li>
         ))}
       </ul>
