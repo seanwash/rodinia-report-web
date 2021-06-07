@@ -43,6 +43,11 @@ npm run db:user:seed       # This will create a seed user in the Firebase auth e
 npm run db:seed            # This will create some seed data for you to use in Postgres via Prisma.
 ```
 
+## Common Issues
+
+- `Error: Your API key is invalid, please check you have copied it correctly.` You're more than likely missing a value for one of the Firebase environment variables.
+- `"I created a user in dev, but I'm not able to login anymore."` The Firebase emulator will wipe all of its services, including auth, when restarted. You'll have to re-create your user.
+
 ## Technical Notes
 
 ### Remix
