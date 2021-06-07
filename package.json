@@ -2,13 +2,13 @@
   "private": true,
   "name": "rodinia-report",
   "scripts": {
-    "dev": "concurrently \"npm:remix:dev\" \"npm:start:dev\" \"npm:css:dev\"",
-    "dev:railway": "railway run concurrently \"npm:remix:dev\" \"npm:start:dev\" \"npm:css:dev\"",
+    "dev": "concurrently -n remix,express,postcss -c magenta,blue,green \"npm:remix:dev\" \"npm:start:dev\" \"npm:css:dev\"",
+    "dev:railway": "railway run concurrently -n remix,express,postcss -c magenta,blue,green \"npm:remix:dev\" \"npm:start:dev\" \"npm:css:dev\"",
 
     "firebase:emulators": "firebase emulators:start",
 
-    "db:user:seed": "NODE_ENV=development ts-node lib/fire/seed.ts",
-    "db:user:seed:railway": "NODE_ENV=development railway run ts-node lib/fire/seed.ts",
+    "db:user:seed": "NODE_ENV=development ts-node -r dotenv/config app/lib/fire/seed.ts",
+    "db:user:seed:railway": "NODE_ENV=development railway run ts-node app/lib/fire/seed.ts",
 
     "db:seed": "npx prisma db seed --preview-feature",
     "db:seed:railway": "railway run npx prisma db seed --preview-feature",
@@ -23,8 +23,9 @@
     "lint:railway": "railway run eslint --ext \".ts,.tsx,.js,.jsx\" app/",
 
     "build": "npm run css:build && npm run remix:build",
-    "start": "NODE_ENV=production node server/index.js",
-    "start:dev": "NODE_ENV=development node server/index.js"
+
+    "start": "NODE_ENV=production node server/index.ts",
+    "start:dev": "NODE_ENV=development node server/index.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
