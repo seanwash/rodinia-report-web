@@ -1,8 +1,8 @@
-const path = require("path");
-const express = require("express");
-const compression = require("compression");
-const morgan = require("morgan");
-const { createRequestHandler } = require("@remix-run/express");
+import express, { Request, Response, NextFunction } from "express";
+import path from "path";
+import compression from "compression";
+import morgan from "morgan";
+import { createRequestHandler } from "@remix-run/express";
 
 const MODE = process.env.NODE_ENV;
 const BUILD_DIR = path.join(process.cwd(), "server/build");
@@ -10,7 +10,9 @@ const LOG_FORMAT = MODE === "production" ? "combined" : "dev";
 
 const app = express();
 app.use(compression());
-app.use(morgan(LOG_FORMAT));
+// TODO: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/50076
+// @ts-ignore
+app.use(morgan<Request, Response>(LOG_FORMAT));
 
 // You may want to be more aggressive with this caching
 app.use(express.static("public", { maxAge: "1h" }));
@@ -18,16 +20,12 @@ app.use(express.static("public", { maxAge: "1h" }));
 // Remix fingerprints its assets so we can cache forever
 app.use(express.static("public/build", { immutable: true, maxAge: "1y" }));
 
-app.get("/thing", (req, res) => {
-  res.json({ ping: "pong" });
-});
-
 app.all(
   "*",
   MODE === "production"
     ? // eslint-disable-next-line global-require
       createRequestHandler({ build: require("./build") })
-    : (req, res, next) => {
+    : (req: Request, res: Response, next: NextFunction) => {
         // eslint-disable-next-line no-use-before-define
         purgeRequireCache();
         // eslint-disable-next-line global-require
