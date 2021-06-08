@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
 import path from "path";
 import compression from "compression";
 import morgan from "morgan";
@@ -20,37 +20,39 @@ app.use(express.static("public", { maxAge: "1h" }));
 // Remix fingerprints its assets so we can cache forever
 app.use(express.static("public/build", { immutable: true, maxAge: "1y" }));
 
-app.all(
-  "*",
-  MODE === "production"
-    ? // eslint-disable-next-line global-require
-      createRequestHandler({ build: require("./build") })
-    : (req: Request, res: Response, next: NextFunction) => {
-        // eslint-disable-next-line no-use-before-define
-        purgeRequireCache();
-        // eslint-disable-next-line global-require
-        const build = require("./build");
-        return createRequestHandler({ build, mode: MODE })(req, res, next);
+if (MODE === "production") {
+  app.all(
+    "*",
+    createRequestHandler({
+      // eslint-disable-next-line global-require
+      build: require("./build"),
+      getLoadContext() {
+        // Whatever you return here will be passed as `context` to your loaders and actions.
       },
-);
+    }),
+  );
+} else {
+  app.all("*", (req, res, next) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in require.cache) {
+      if (key.startsWith(BUILD_DIR)) {
+        delete require.cache[key];
+        if (process.env.DEBUG) console.warn("deleted", key);
+      }
+    }
+
+    return createRequestHandler({
+      // eslint-disable-next-line global-require
+      build: require("./build"),
+      getLoadContext() {
+        // Whatever you return here will be passed as `context` to your loaders and actions.
+      },
+    })(req, res, next);
+  });
+}
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`Express server listening on port ${port}`);
 });
-
-/// /////////////////////////////////////////////////////////////////////////////
-function purgeRequireCache() {
-  // purge require cache on requests for "server side HMR" this won't let
-  // you have in-memory objects between requests in development,
-  // alternatively you can set up nodemon/pm2-dev to restart the server on
-  // file changes, we prefer the DX of this though, so we've included it
-  // for you by default
-  // eslint-disable-next-line no-restricted-syntax
-  for (const key in require.cache) {
-    if (key.startsWith(BUILD_DIR)) {
-      delete require.cache[key];
-    }
-  }
-}
