@@ -20,6 +20,7 @@ export const loader: LoaderFunction = async () => {
     include: {
       topics: true,
     },
+    take: 2,
   });
 
   return { stories };
@@ -59,6 +60,8 @@ export default function Index() {
           </li>
         ))}
       </ul>
+
+      <Link to="/pages/2">Next page</Link>
     </>
   );
 }
