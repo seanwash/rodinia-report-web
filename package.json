@@ -6,7 +6,7 @@
     "dev:railway": "railway run concurrently -n remix,express,postcss -c magenta,blue,green \"npm:remix:dev\" \"npm:start:dev\" \"npm:css:dev\"",
     "firebase:emulators": "firebase emulators:start",
     "db:user:seed": "NODE_ENV=development ts-node -r dotenv/config --dir app lib/fire/seed.ts",
-    "db:user:seed:railway": "NODE_ENV=development railway run ts-node app/lib/fire/seed.ts",
+    "db:user:seed:railway": "NODE_ENV=development railway run ts-node --dir app lib/fire/seed.ts",
     "db:seed": "npx prisma db seed --preview-feature",
     "db:seed:railway": "railway run npx prisma db seed --preview-feature",
     "remix:dev": "npx remix dev",
