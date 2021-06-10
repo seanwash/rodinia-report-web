@@ -21,8 +21,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Type Check
-        run: tsc --noEmit
+      - name: Type Check - API
+        run: tsc -p server/tsconfig.json --noEmit
+
+      - name: Type Check - APP
+        run: tsc -p app/tsconfig.json --noEmit
 
       - name: Lint
         run: npm run lint
