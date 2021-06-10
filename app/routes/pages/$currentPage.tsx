@@ -1,8 +1,10 @@
-import type { MetaFunction, LoaderFunction } from "remix";
-import { useRouteData } from "remix";
-import { Link } from "react-router-dom";
-import { db, StoryWithTopics } from "../../lib/db";
+import { MetaFunction, LoaderFunction, redirect, useRouteData } from "remix";
+import {
+  getStoriesByPage,
+  StoriesByPageData,
+} from "../../lib/db/queries/storiesByPage";
 import StoryListItem from "../../components/StoryListItem/StoryListItem";
+import Pagination from "../../components/Pagination/Pagination";
 
 export const meta: MetaFunction = () => {
   return {
@@ -13,28 +15,20 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const stories = await db.story.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      topics: true,
-    },
-    skip: (parseInt(params.number)-1) * 2,
-  });
+  const currentPage = parseInt(params.currentPage, 10);
+  const data = await getStoriesByPage(currentPage);
 
-  return { stories, pageNumber: params.number };
+  if (currentPage > data.totalPages) {
+    return redirect("/");
+  }
+
+  return data;
 };
 
-interface IndexRouteData {
-  stories: StoryWithTopics[];
-  pageNumber: number;
-}
+interface IndexRouteData extends StoriesByPageData {}
 
 export default function Index() {
-  const { stories, pageNumber } = useRouteData<IndexRouteData>();
-
-  const previousPagePath = pageNumber > 2 ? `/pages/${pageNumber-1}` : `/`;
+  const { stories, currentPage, totalPages } = useRouteData<IndexRouteData>();
 
   return (
     <>
@@ -45,7 +39,9 @@ export default function Index() {
           </li>
         ))}
       </ul>
-      <Link to={previousPagePath}>Previous Page</Link>
+      <div className="mt-4">
+        <Pagination currentPage={currentPage} totalPages={totalPages} />
+      </div>
     </>
   );
 }
