@@ -1,8 +1,12 @@
-import type { MetaFunction, LoaderFunction } from "remix";
-import { useRouteData } from "remix";
 import { Link } from "react-router-dom";
-import { db, StoryWithTopics } from "../lib/db";
+import type { LoaderFunction, MetaFunction } from "remix";
+import { useRouteData } from "remix";
+import Pagination from "../components/Pagination/Pagination";
 import StoryListItem from "../components/StoryListItem/StoryListItem";
+import {
+  getStoriesByPage,
+  StoriesByPageData,
+} from "../lib/db/queries/storiesByPage";
 
 export const meta: MetaFunction = () => {
   return {
@@ -13,24 +17,13 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = async () => {
-  const stories = await db.story.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      topics: true,
-    },
-  });
-
-  return { stories };
+  return await getStoriesByPage();
 };
 
-interface IndexRouteData {
-  stories: StoryWithTopics[];
-}
+interface IndexRouteData extends StoriesByPageData {}
 
 export default function Index() {
-  const { stories } = useRouteData<IndexRouteData>();
+  const { stories, currentPage, totalPages } = useRouteData<IndexRouteData>();
 
   return (
     <>
@@ -59,6 +52,10 @@ export default function Index() {
           </li>
         ))}
       </ul>
+
+      <div className="mt-4">
+        <Pagination currentPage={currentPage} totalPages={totalPages} />
+      </div>
     </>
   );
 }
