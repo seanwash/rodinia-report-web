@@ -7,7 +7,7 @@ import {
 } from "remix";
 import { Link } from "react-router-dom";
 import { getUser } from "../../lib/sessions.server";
-import { db, Topic } from "../../lib/db";
+import { db, Topic } from "../../lib/db/index.server";
 
 export const meta: MetaFunction = () => {
   return {

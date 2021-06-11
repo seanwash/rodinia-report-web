@@ -5,7 +5,7 @@ import morgan from "morgan";
 import { createRequestHandler } from "@remix-run/express";
 
 const MODE = process.env.NODE_ENV;
-const BUILD_DIR = path.join(process.cwd(), "server/build");
+const BUILD_DIR = path.join(process.cwd(), "build");
 const LOG_FORMAT = MODE === "production" ? "combined" : "dev";
 
 const app = express();
@@ -24,8 +24,8 @@ if (MODE === "production") {
   app.all(
     "*",
     createRequestHandler({
-      // eslint-disable-next-line global-require
-      build: require("./build"),
+      // eslint-disable-next-line global-require, import/no-dynamic-require
+      build: require(BUILD_DIR),
       getLoadContext() {
         // Whatever you return here will be passed as `context` to your loaders and actions.
       },
@@ -37,13 +37,14 @@ if (MODE === "production") {
     for (const key in require.cache) {
       if (key.startsWith(BUILD_DIR)) {
         delete require.cache[key];
+        // eslint-disable-next-line no-console
         if (process.env.DEBUG) console.warn("deleted", key);
       }
     }
 
     return createRequestHandler({
-      // eslint-disable-next-line global-require
-      build: require("./build"),
+      // eslint-disable-next-line global-require, import/no-dynamic-require
+      build: require(BUILD_DIR),
       getLoadContext() {
         // Whatever you return here will be passed as `context` to your loaders and actions.
       },

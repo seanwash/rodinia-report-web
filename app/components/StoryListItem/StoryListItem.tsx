@@ -1,5 +1,5 @@
 import { ClockIcon, GlobeAltIcon } from "../icons";
-import { StoryWithTopics } from "../../lib/db";
+import { StoryWithTopics, Topic } from "../../lib/db/index.server";
 
 interface StoryListItemProps {
   story: StoryWithTopics;
@@ -47,7 +47,7 @@ const StoryListItem: React.FC<StoryListItemProps> = ({ story }) => {
 
           {story.topics.length > 0 && (
             <ul className="mt-4 sm:mt-0 space-x-2">
-              {story.topics.map((topic) => (
+              {story.topics.map((topic: Topic) => (
                 <li
                   className="text-xs text-white bg-el-paso inline-block rounded-full py-1 px-2"
                   key={topic.id}
