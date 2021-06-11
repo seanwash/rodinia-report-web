@@ -37,6 +37,7 @@ if (MODE === "production") {
     for (const key in require.cache) {
       if (key.startsWith(BUILD_DIR)) {
         delete require.cache[key];
+        // eslint-disable-next-line no-console
         if (process.env.DEBUG) console.warn("deleted", key);
       }
     }
