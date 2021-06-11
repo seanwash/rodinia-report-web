@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import { getUser } from "../../lib/sessions.server";
 import { db, Topic } from "../../lib/db";
+import useFetchStoryMetadata from "../../hooks/useFetchStoryMetadata";
 
 export const meta: MetaFunction = () => {
   return {
@@ -68,21 +69,25 @@ interface NewStoryRouteData {
 export default function NewStory() {
   const { topics } = useRouteData<NewStoryRouteData>();
 
+  const {
+    sourceUrl,
+    title,
+    isLoading,
+    isError,
+    error,
+    handleSourceUrlChange,
+    handleTitleChange,
+  } = useFetchStoryMetadata();
+
+  console.log("-----", "NewStory", isError, error);
+
   return (
     <>
       <h2 className="text-2xl leading-7 mb-4">Submit Story</h2>
 
+      {isError && <div>An error occurred</div>}
+
       <form method="post" className="space-y-4">
-        <div>
-          <input
-            name="title"
-            placeholder="Title"
-            aria-label="Title"
-            type="text"
-            required
-            className="twc-input"
-          />
-        </div>
         <div>
           <input
             name="sourceUrl"
@@ -91,6 +96,22 @@ export default function NewStory() {
             type="url"
             required
             className="twc-input"
+            onChange={handleSourceUrlChange}
+            value={sourceUrl}
+            disabled={isLoading}
+          />
+        </div>
+        <div>
+          <input
+            name="title"
+            placeholder="Title"
+            aria-label="Title"
+            type="text"
+            required
+            className="twc-input"
+            onChange={handleTitleChange}
+            value={title}
+            disabled={isLoading}
           />
         </div>
         <div className="relative flex items-center">

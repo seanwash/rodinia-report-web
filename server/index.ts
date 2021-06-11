@@ -1,7 +1,8 @@
-import express, { Request, Response } from "express";
+import express, { json, Request, Response } from "express";
 import path from "path";
 import compression from "compression";
 import morgan from "morgan";
+import ogScraper from "open-graph-scraper";
 import { createRequestHandler } from "@remix-run/express";
 
 const MODE = process.env.NODE_ENV;
@@ -10,6 +11,8 @@ const LOG_FORMAT = MODE === "production" ? "combined" : "dev";
 
 const app = express();
 app.use(compression());
+// @ts-ignore
+app.use(json());
 // TODO: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/50076
 // @ts-ignore
 app.use(morgan<Request, Response>(LOG_FORMAT));
@@ -19,6 +22,19 @@ app.use(express.static("public", { maxAge: "1h" }));
 
 // Remix fingerprints its assets so we can cache forever
 app.use(express.static("public/build", { immutable: true, maxAge: "1y" }));
+
+app.post("/api/stories/metadata", async (req: Request, resp: Response) => {
+  const { url } = req.body;
+  if (!url) return resp.sendStatus(400);
+
+  try {
+    const { result } = await ogScraper({ url });
+    return resp.json(result);
+  } catch (error) {
+    resp.status(422);
+    return resp.json(error);
+  }
+});
 
 if (MODE === "production") {
   app.all(

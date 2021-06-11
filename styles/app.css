@@ -7,6 +7,10 @@
   @apply bg-white text-left appearance-none block w-full px-3 py-2 border border-gray-300 rounded-sm shadow-sm placeholder-gray-400 focus:outline-none focus:ring-el-paso focus:border-el-paso sm:text-sm;
 }
 
+.twc-input:disabled {
+  @apply opacity-50;
+}
+
 .twc-select {
   @apply bg-white text-left appearance-none block w-full px-3 py-2 border border-gray-300 rounded-sm shadow-sm placeholder-gray-400 focus:outline-none focus:ring-el-paso focus:border-el-paso sm:text-sm;
 }
