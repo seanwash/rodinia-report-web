@@ -1,7 +1,7 @@
 import type { MetaFunction, LoaderFunction } from "remix";
 import { useRouteData } from "remix";
 import { Link } from "react-router-dom";
-import { db, StoryWithTopics } from "../lib/db";
+import { db, StoryWithTopics } from "../lib/db/index.server";
 import StoryListItem from "../components/StoryListItem/StoryListItem";
 
 export const meta: MetaFunction = () => {
