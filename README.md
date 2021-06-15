@@ -5,7 +5,7 @@ and most inspiring undertakings around the world.
 
 ## Road map
 
-It's still early days for Rodinia, so we don't have a formal road map just yet, but we're keeping track of a number of
+It's still early days for Rodinia, so we don't have a formal road map just yet. We're keeping track of a number of
 items that are needed to reach MVP status [here](https://github.com/seanwash/rodinia-report-web/projects/1).
 
 ## Setup
@@ -25,12 +25,11 @@ Note that Rodinia uses [Remix.run](https://remix.run) and you'll need access to 
 
 ### Setup Postgres
 
-The primary datastore for Rodinia is Postgres, and you'll need to have it setup and running locally.
+The primary datastore for Rodinia is Postgres, and you'll need to have it setup and running locally. Once Postgres is running, update the `DATABASE_URL` value in `.env`. A valid `postgres://` is expected.
 
-### Prepare Firebase
+### Setup Firebase & Firebase Emulator
 
-You'll need to create a `.firebaserc` file at the root of the project. It's used by `firebase-tools`. A Java runtime is
-also required for the Firebase emulators to run, so if you don't have a Java runtime installed, you'll need one.
+You'll need to create a `.firebaserc` file at the root of the project. It's used by `firebase-tools`. A Java runtime is required for the Firebase emulators to run, so if you don't have a Java runtime installed, you'll need one.
 
 ### Start the server
 
@@ -39,9 +38,15 @@ From your terminal:
 ```sh
 npm run firebase:emulators # This will start the local versions of the Firebase services that Rodinia needs. The UI is located on port 4000.
 npm run dev                # This will start one process for the dev server and one process for postcss. The app is located on port 3000.
+npx prisma migrate dev     # Migrate the database so that it reflects `schema.prisma`.
 npm run db:user:seed       # This will create a seed user in the Firebase auth emulator.
 npm run db:seed            # This will create some seed data for you to use in Postgres via Prisma.
 ```
+
+## Common Issues
+
+- `Error: Your API key is invalid, please check you have copied it correctly.` You're more than likely missing a value for one of the Firebase environment variables.
+- `"I created a user in dev, but I'm not able to login anymore."` The Firebase emulator will wipe all of its services, including auth, when restarted. You'll have to re-create your user.
 
 ## Technical Notes
 
