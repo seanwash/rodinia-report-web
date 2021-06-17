@@ -1,13 +1,19 @@
 import {
   ActionFunction,
+  json,
   LoaderFunction,
   MetaFunction,
   redirect,
   useRouteData,
 } from "remix";
 import { Link } from "react-router-dom";
-import { getUser } from "../../lib/sessions.server";
-import { db, Topic } from "../../lib/db/index.server";
+import { useState } from "react";
+import {
+  commitSession,
+  getSession,
+  getUser,
+} from "../../../lib/sessions.server";
+import { db, Topic } from "../../../lib/db/index.server";
 
 export const meta: MetaFunction = () => {
   return {
@@ -20,13 +26,25 @@ export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   if (!user) return redirect("/sessions");
 
+  const session = await getSession(request);
+  const sourceUrl = session.get("storyForm_sourceUrl")!;
+  const title = session.get("storyForm_title");
+  const error = session.get("error");
+
   const topics = await db.topic.findMany({
     orderBy: {
       name: "asc",
     },
   });
 
-  return { topics };
+  return json(
+    { topics, title, sourceUrl, error },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    },
+  );
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -36,8 +54,9 @@ export const action: ActionFunction = async ({ request }) => {
   const user = await getUser(request);
   if (!user) return redirect("/sessions");
 
+  const session = await getSession(request);
+
   // TODO: Error handling?
-  // TODO: Validation?
   try {
     await db.story.create({
       data: {
@@ -53,24 +72,45 @@ export const action: ActionFunction = async ({ request }) => {
       },
     });
   } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log("-----", "action", e);
-    return redirect("/stories/new");
+    session.flash("error", "Story could not be saved");
+    session.flash("storyForm_title", params.get("title"));
+    session.flash("storyForm_sourceUrl", params.get("sourceUrl"));
+
+    return redirect("/stories/new/add", {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });
   }
 
-  return redirect("/");
+  return redirect("/", {
+    headers: {
+      "Set-Cookie": await commitSession(session),
+    },
+  });
 };
 
 interface NewStoryRouteData {
   topics: Topic[];
+  title?: string;
+  sourceUrl?: string;
+  error?: string;
 }
 
 export default function NewStory() {
-  const { topics } = useRouteData<NewStoryRouteData>();
+  const { topics, title, sourceUrl, error } = useRouteData<NewStoryRouteData>();
+  const [titleField, setTitleField] = useState(title);
+  const [sourceUrlField, setSourceUrlField] = useState(sourceUrl);
 
   return (
     <>
       <h2 className="text-2xl leading-7 mb-4">Submit Story</h2>
+
+      {error && (
+        <div className="p-3 bg-red-600 text-white rounded-sm shadow-sm mb-4">
+          {error}
+        </div>
+      )}
 
       <form method="post" className="space-y-4">
         <div>
@@ -81,6 +121,8 @@ export default function NewStory() {
             type="text"
             required
             className="twc-input"
+            value={titleField || ""}
+            onChange={(e) => setTitleField(e.target.value)}
           />
         </div>
         <div>
@@ -91,6 +133,8 @@ export default function NewStory() {
             type="url"
             required
             className="twc-input"
+            value={sourceUrlField || ""}
+            onChange={(e) => setSourceUrlField(e.target.value)}
           />
         </div>
         <div className="relative flex items-center">

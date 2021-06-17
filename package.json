@@ -4,26 +4,19 @@
   "scripts": {
     "dev": "concurrently -n postcss,remix -c magenta,blue \"npm:css:dev\" \"npm:remix:dev\"",
     "dev:railway": "railway run concurrently -n postcss,remix -c magenta,blue \"npm:css:dev\" \"npm:remix:dev\"",
-
     "firebase:emulators": "firebase emulators:start",
-
     "db:user:seed": "NODE_ENV=development ts-node -r dotenv/config --dir app lib/fire/seed.ts",
     "db:user:seed:railway": "NODE_ENV=development railway run ts-node --dir app lib/fire/seed.ts",
     "db:seed": "npx prisma db seed --preview-feature",
     "db:seed:railway": "railway run npx prisma db seed --preview-feature",
-
     "remix:dev": "npx remix run",
     "remix:build": "npx remix build",
-
     "css:dev": "postcss styles --base styles --dir app/styles -w",
     "css:build": "postcss styles --base styles --dir app/styles --env production",
-
     "lint": "eslint --ext \".ts,.tsx\" app/",
     "lint:railway": "railway run eslint --ext \".ts,.tsx\" app/",
-
     "check:app": "tsc -p app/tsconfig.json --noEmit",
     "check:app:railway": "railway run tsc -p app/tsconfig.json --noEmit",
-
     "build": "npm run css:build && npm run remix:build",
     "start": "NODE_ENV=production remix-serve build"
   },
@@ -36,9 +29,11 @@
     "@sentry/node": "^6.4.0",
     "@sentry/react": "^6.4.0",
     "@sentry/tracing": "^6.4.0",
+    "@types/open-graph-scraper": "^4.8.0",
     "dotenv": "^10.0.0",
     "firebase": "^8.5.0",
     "firebase-admin": "^9.8.0",
+    "open-graph-scraper": "^4.9.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^6.0.0-beta.0",
@@ -57,10 +52,10 @@
     "concurrently": "^6.1.0",
     "cssnano": "^5.0.2",
     "eslint": "^7.26.0",
-    "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.4.0",
@@ -73,6 +68,7 @@
     "prettier": "^2.2.1",
     "prisma": "^2.23.0",
     "tailwindcss": "^2.1.3",
+    "ts-node": "^10.0.0",
     "typescript": "^4.1.2"
   },
   "engines": {
