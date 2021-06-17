@@ -45,7 +45,7 @@ export default function Index() {
         </div>
         <div className="flex mt-4 sm:mt-0 sm:ml-8">
           <span className="shadow-sm rounded-sm">
-            <Link className="twc-button" to="/stories/new">
+            <Link className="twc-button" to="/stories/new/url">
               Submit Story
             </Link>
           </span>
@@ -54,7 +54,7 @@ export default function Index() {
 
       <ul className="bg-alabaster-300 shadow-sm rounded-sm divide-y divide-alabaster mt-8">
         {stories?.map((story) => (
-          <li key={story.sourceTitle}>
+          <li key={story.id}>
             <StoryListItem story={story} />
           </li>
         ))}
